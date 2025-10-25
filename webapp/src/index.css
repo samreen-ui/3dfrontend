@@ -1,0 +1,11 @@
+/* index.css */
+@import "tailwindcss";
+
+/* Optional custom classes */
+body {
+  background-color: black;
+  /* use plain CSS instead of bg-black */
+  color: white;
+  /* use plain CSS instead of text-white */
+  font-family: sans;
+}
