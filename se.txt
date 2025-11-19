@@ -1,0 +1,254 @@
+tomcat-user file code (web deploy tomcat)
+
+<role rolename="manager-gui"/>
+<role rolename="manager-script"/>
+<role rolename="admin-gui"/>
+<user username="admin" password="1234" roles="manager-gui,manager-script,admin-gui"/>
+
+to start bin/startup batch
+to see port conf/service
+
+
+
+week 9:
+
+poll scm Jenkinsfile code:
+
+pipeline {
+    agent any
+    tools {
+        maven 'MAVEN_HOME'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('clean') {
+            steps {
+                bat "mvn clean"
+            }
+        }
+        stage('install') {
+            steps {
+                bat "mvn install"
+            }
+        }
+        stage('test') {
+            steps {
+                bat "mvn test"
+            }
+        }
+        stage('package') {
+            steps {
+                bat "mvn package"
+            }
+        }
+    }
+}
+
+
+
+pipeline code for periodical:
+pipeline {
+    agent any
+    tools{
+        maven 'MAVEN_HOME'
+    }
+    stages {
+        stage('git repo & clean') {
+            steps {
+                bat "rmdir  /s /q octYogitaJava || exit 0"
+                bat "git clone https://github.com/anujyog1/octYogitaJava.git"
+                bat "mvn clean -f octYogitaJava"
+            }
+        }
+        stage('install') {
+            steps {
+                bat "mvn install -f octYogitaJava"
+            }
+        }
+        stage('test') {
+            steps {
+                bat "mvn test -f octYogitaJava"
+            }
+        }
+        stage('package') {
+            steps {
+                bat "mvn package -f octYogitaJava"
+            }
+        }
+    }
+}
+
+
+
+
+
+week 10:
+# 1. Start Minikube (use docker driver – works on every laptop)
+minikube start --driver=docker
+
+# 2. Check status (screenshot this)
+minikube status
+
+# 3. Create Nginx deployment
+kubectl create deployment mynginx --image=nginx
+
+# 4. Check deployment & pods (screenshot)
+kubectl get deployments
+kubectl get pods
+
+# 5. Expose it
+kubectl expose deployment mynginx --type=NodePort --port=80
+
+# 6. Scale to 4 pods (screenshot the result)
+kubectl scale deployment mynginx --replicas=4
+kubectl get pods -o wide
+
+# 7. Get the URL (this is the magic command)
+minikube service mynginx --url
+
+# 8. It will show something like http://192.168.49.2:3XXXX
+#    Open that URL in browser → You will see NGINX WELCOME PAGE (screenshot this)
+
+# 9. Open Kubernetes Dashboard (bonus marks)
+minikube dashboard
+
+
+# 1. Pull Nagios image
+docker pull jasonrivers/nagios:latest
+
+# 2. Run Nagios container
+docker run --name nagiosdemo -d -p 8888:80 jasonrivers/nagios:latest
+
+# 3. Check it is running
+docker ps
+
+# 4. Open browser → http://localhost:8888
+#    Username: nagiosadmin
+#    Password: nagios
+
+# 5. Take these screenshots inside Nagios:
+#    - Login page
+#    - Dashboard (Tactical Overview)
+#    - Hosts → localhost
+#    - Services list
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+week 11:
+
+webhook:
+gitscm option on in any already build job
+
+webhook -> ngrok
+
+cmds:
+ngrok config add-authtoken .....
+
+ngrok http 8080    -> or 8888
+
+in GitHub:
+http://<url>/github-webhook/
+
+then changes->gitpush->automatically
+
+
+smtp email:
+
+email notification:
+smtp.gmail.com
+
+adv-> on smtp(username email pws 16 digit) and ssl (port 465 replyto:emailadd)
+
+extended email not:
+smtp.gmail.com  -> 465
+
+adv: new cred (username email pwd 16 digit)
+ssl on
+
+then default content text/plain
+
+in job:
+post-build : on editable email option
+
+recipient list : emailed
+adv-> trigger ->success failure'
+in triggers make sure to add recipe list (not only developer)
+
+
+
+week12:
+
+aws ec2 launch instance
+ubuntu , free tier , 64 , t3/t2.micro
+keypair , on checkbox(http , https) ->launch instance
+connect -> ssh -i cmd copy
+
+keypair on desktop -> open powershell in admin
+-> paste ssh -i cmd
+
+cmd:
+sudo apt update 
+sudo apt-get install docker.io
+sudo apt install git
+sudo apt install nano
+
+git clone "index.html repo"
+cd awsprac(repo)
+
+nano Dockerfile
+code:
+FROM nginx:alpine                                                                                                                                                                                                  COPY . /usr/share/nginx/html                                                                                                                                                                                                                         
+(o+enter+x)
+
+
+sudo docker build -t webapp1 .
+sudo docker run -d -p 80:80 webapp
+
+go to brower: https://<ip>
+
+
+
+
+mavenweb aws:
+
+same proce
+
+ssh comd:
+ubuntu -> sudo cmds
+
+git clone "maven-webrepo"
+nano Dockerfile
+
+code:
+FROM tomcat:9-jdk11
+COPY target/*.war /usr/local/tomcat/webapps
+
+sudo docker build -t mavenp .
+sudo docker run -d -p 9090:8080 mavenp  (8080 as tomcat)
+
+cd target->ls -> get the .war filename example lab-aws.war
+
+go to: http://54.167.22.74:9090/my-lab-web-app/ (the war file name)
+
+(to add edit security grp
+
+security-gtp -> wizard-5 (exmp) -> edit inbound
+->add -> port 9090 -> 0.0.0/0
