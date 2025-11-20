@@ -110,6 +110,9 @@ kubectl get pods -o wide
 # 7. Get the URL (this is the magic command)
 minikube service mynginx --url
 
+kubectl port-forward svc/mynginx 8081:80
+
+
 # 8. It will show something like http://192.168.49.2:3XXXX
 #    Open that URL in browser → You will see NGINX WELCOME PAGE (screenshot this)
 
@@ -252,3 +255,4 @@ go to: http://54.167.22.74:9090/my-lab-web-app/ (the war file name)
 
 security-gtp -> wizard-5 (exmp) -> edit inbound
 ->add -> port 9090 -> 0.0.0/0
+
