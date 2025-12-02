@@ -1,0 +1,259 @@
+Discard local changes (not staged):
+git checkout -- filename
+
+Remove file from staging but keep changes:
+git reset filename
+
+Fix last commit message (not pushed):
+git commit --amend -m "Correct commit message"
+
+View commit history in readable format:
+git log --oneline --graph --decorate
+
+Set global username and email:
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+
+View unstaged changes:
+git diff
+
+Switch to feature/login branch:
+git checkout feature/login
+
+Restore accidentally deleted branch:
+git reflog
+git checkout -b feature-ui <commit-id>
+
+Push local commits to remote:
+git push
+
+Fetch latest remote changes without merging:
+git fetch
+
+Create new branch search-filter:
+git checkout -b search-filter
+
+Remove a file completely from repository history:
+git filter-branch --force --index-filter "git rm --cached --ignore-unmatch filename" --prune-empty --tag-name-filter cat -- --all
+
+List local and remote branches:
+git branch -a
+
+Merge feature/signup into main:
+git merge feature/signup
+
+Steps to resolve merge conflict:
+(open file → fix markers → save) 
+git add .
+git commit
+
+Ignore .log files and node_modules/:
+(add to .gitignore)
+*.log
+node_modules/
+
+Find who changed a specific line:
+git blame script.py
+
+Save your work temporarily (stash):
+git stash
+
+Restore stashed changes:
+git stash pop
+
+Delete local branch feature/test:
+git branch -d feature/test
+
+Safely delete merged branch feature-ui:
+git branch -d feature-ui
+
+Force delete unmerged branch feature-experiment:
+git branch -D feature-experiment
+
+Before deleting a branch, ensure:
+You are not currently on that branch.
+
+Check if branch is merged:
+git branch --merged
+
+Delete multiple merged branches:
+git branch -d feature-a feature-b feature-c
+
+Clone a remote repository:
+git clone <repo-url>
+
+View connected remotes:
+git remote -v
+
+Add a new remote:
+git remote add origin <url>
+
+Remove a remote:
+git remote remove origin
+
+Rename a remote:
+git remote rename origin backup
+
+Fetch updates without merging:
+git fetch
+
+Pull latest changes and merge:
+git pull
+
+Push commits to remote:
+git push
+
+First push with upstream:
+git push -u origin main
+
+Change remote URL:
+git remote set-url origin <new-url>
+
+List remote branches:
+git ls-remote --heads
+
+Remove stale remote branches:
+git fetch --prune
+
+Fetch a specific remote branch:
+git fetch origin feature/login
+
+Show detailed remote info:
+git remote show origin
+
+Rebase local branch onto remote:
+git pull --rebase
+
+
+
+------------------
+
+You made changes to main.py but want to discard them before staging.
+git restore main.py
+
+You staged file1.txt by mistake and want to unstage it without losing changes.
+git restore --staged file1.txt
+
+You committed with the wrong message and haven’t pushed yet.
+git commit --amend -m "Corrected commit message"
+
+You want to view commit history in a readable format.
+git log --oneline
+
+You cloned a repo and want to set your username/email globally.
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+
+You want to see unstaged changes.
+git diff
+
+You want to switch to feature/login branch.
+git switch feature/login
+
+You deleted feature-ui branch locally and want to recover it.
+git reflog
+git checkout -b feature-ui <commit_hash>
+
+You want to push local commits to remote.
+git push origin <branch-name>
+
+You want to fetch latest changes without merging.
+git fetch origin
+
+You want to create and switch to new branch search-filter.
+git switch -c search-filter
+
+You committed a sensitive file and want to remove it from history.
+git filter-branch --force --index-filter "git rm --cached --ignore-unmatch secrets.txt" --prune-empty --tag-name-filter cat -- --all
+
+You want to list all local and remote branches.
+git branch -a
+
+You want to merge feature/signup into main.
+git merge feature/signup
+
+You want to resolve a merge conflict in app.js.
+(open app.js, fix markers)
+git add app.js
+git commit
+
+You want Git to ignore .log files and node_modules/.
+*.log
+node_modules/
+
+You want to know who changed a specific line in script.py.
+git blame script.py
+
+You want to stash your current work.
+git stash
+
+You want to apply your last stash.
+git stash apply
+
+You want to delete local branch feature/test.
+git branch -d feature/test
+
+You want to safely delete feature-ui after merging.
+git branch -d feature-ui
+
+You want to force delete an unmerged branch feature-experiment.
+git branch -D feature-experiment
+
+Before deleting feature-ui, you must not be on it.
+git checkout main
+git branch -d feature-ui
+
+You want to check if bugfix-footer was merged before deleting.
+git branch --merged
+
+You want to delete multiple merged branches at once.
+git branch -d feature-a feature-b feature-c
+
+You want to clone a remote repository.
+git clone <repository_url>
+
+You want to check existing remotes.
+git remote -v
+
+You want to add a new remote.
+git remote add origin <url>
+
+You want to remove a remote.
+git remote remove origin
+
+You want to rename a remote.
+git remote rename origin backup
+
+You want to fetch updates from remote.
+git fetch origin
+
+You want to pull updates and merge.
+git pull origin main
+
+You want to push commits to remote.
+git push origin main
+
+You want to set upstream for first push.
+git push --set-upstream origin main
+
+You want to change the remote URL.
+git remote set-url origin <new-url>
+
+You want to list remote branches.
+git branch -r
+
+You want to prune deleted remote branches.
+git remote prune origin
+
+You want to fetch a specific branch from remote.
+git fetch origin feature/login
+
+You want to view remote info.
+git remote show origin
+
+You want to rebase your local branch onto remote main.
+git fetch origin
+git rebase origin/main
+
+
+------------------
