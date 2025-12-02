@@ -1,3 +1,239 @@
+week 5:
+docker pull redis
+docker run --name myredis -d redis
+
+docker ps
+
+docker exec -it myredis redis-cli
+SET name "sam"
+GET name
+
+docker stop myredis
+
+Dockerfile:
+FROM redis:latest
+CMD ["redis-server"]
+
+docker build -t myredis1 .
+docker run --name myrediscont -d myredis1
+docker ps
+docker login
+
+docker commit 0903(id) username/myredis1(image)
+
+docker images
+
+docker push username/myredis1
+
+docker rmi username/myredis1
+docker logout
+
+docker pull username/myredis1  
+
+-------------------------------
+
+week 6:
+version: '3.8'  
+
+services:
+  wordpress:  
+    image: wordpress:latest
+    ports:
+      - "8080:80"  
+    environment:
+      WORDPRESS_DB_HOST: db:3306  
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - db  
+
+  db: 
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+
+docker-compose up -d
+docker-compose down
+docker-compose up --scale wordpress=2 -d
+
+----------
+scaling 
+version: "3.9"
+
+services:
+  web1:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+
+  web2:
+    image: nginx:alpine
+    ports:
+      - "8081:80"
+
+
+cmd: docker-compose up --scale web=2 -d
+
+-----------
+
+pstgre
+version: "3.9"
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: demo_db
+----------------
+add redis to nginx and postgres
+
+version: "3.9"
+services:
+  redis:
+    image: redis:alpine
+
+  web:
+    image: nginx:latest
+    ports:
+      - "8089:80"
+    depends_on:
+      - redis
+
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: demo_db
+
+---------------
+networking
+networks:
+  app-net:
+
+volumes:
+  db-data:
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8087:80"
+    networks:
+      - app-net
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: demo_db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-net
+
+
+docker-compose up -d
+docker exec -it <container_name> psql -U demo -d demo_db
+CREATE TABLE users (
+       id SERIAL PRIMARY KEY,
+       name VARCHAR(50),
+       email VARCHAR(100)
+   );
+INSERT INTO users (name, email) VALUES
+   ('Alice', 'alice@example.com'),
+   ('Bob', 'bob@example.com');
+
+SELECT * FROM users;
+
+-----------------------
+
+app.py in same folder
+from flask import Flask
+app = Flask(__name__)
+@app.route("/")
+def home():
+    return "Hello from Flask + Docker!"
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+
+Dockerfile
+
+FROM python:3.10-slim
+WORKDIR /app
+COPY app.py /app/
+RUN pip install flask
+CMD ["python", "app.py"]
+
+
+
+Dockercompse
+networks:
+  app-net:
+
+volumes:
+  db-data:
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: demo_db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-net
+
+
+
+!! cmd : docker compose up --build
+!! vists the port 5000
+
+------------
+week 7:
+           <dependency>
+               <groupId>javax.servlet</groupId>
+               <artifactId>javax.servlet-api</artifactId>
+               <version>4.0.1</version>
+               <scope>provided</scope>
+           </dependency>
+
+Mutichild:
+
+<dependency>
+	<groupId>KMIT</groupId>
+	<artifactId>MultimoduleChild1</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+
+-------------------------------
+
+week 8: (to run web app)
+
 tomcat-user file code (web deploy tomcat)
 
 <role rolename="manager-gui"/>
@@ -113,9 +349,6 @@ minikube service mynginx --url
 kubectl port-forward svc/mynginx 8081:80
 
 
-# 8. It will show something like http://192.168.49.2:3XXXX
-#    Open that URL in browser → You will see NGINX WELCOME PAGE (screenshot this)
-
 # 9. Open Kubernetes Dashboard (bonus marks)
 minikube dashboard
 
@@ -141,19 +374,7 @@ docker ps
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+-----------------------------
 
 week 11:
 
@@ -195,8 +416,7 @@ recipient list : emailed
 adv-> trigger ->success failure'
 in triggers make sure to add recipe list (not only developer)
 
-
-
+----------------------------
 week12:
 
 aws ec2 launch instance
@@ -218,7 +438,8 @@ cd awsprac(repo)
 
 nano Dockerfile
 code:
-FROM nginx:alpine                                                                                                                                                                                                  COPY . /usr/share/nginx/html                                                                                                                                                                                                                         
+FROM nginx:alpine                                                                                                                                                                                                  COPY . /usr/share/nginx/html 
+                                                                                                                                                                                                                        
 (o+enter+x)
 
 
@@ -227,8 +448,7 @@ sudo docker run -d -p 80:80 webapp
 
 go to brower: https://<ip>
 
-
-
+-----------------------
 
 mavenweb aws:
 
@@ -255,4 +475,3 @@ go to: http://54.167.22.74:9090/my-lab-web-app/ (the war file name)
 
 security-gtp -> wizard-5 (exmp) -> edit inbound
 ->add -> port 9090 -> 0.0.0/0
-
