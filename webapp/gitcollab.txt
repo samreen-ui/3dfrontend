@@ -1,0 +1,207 @@
+WEEK 3 – Workflow for Lab Conduction
+
+Objectives:
+● Demonstrating collaborative coding
+● Resolving conflicts when working on the same code
+● Creating and applying a patch
+● Scenario-based questions
+
+------------------------------------------------------------
+1. COLLABORATIVE CODING
+------------------------------------------------------------
+Collaborative coding means multiple people working together on the same codebase. It improves quality, speed, and tracking of changes.
+
+Two ways:
+a) Creating an Organization
+b) Working through a shared repository
+
+------------------------------------------------------------
+a) Creating an Organization (for team projects)
+------------------------------------------------------------
+Step 1:
+GitHub → New organization → Create a free organization
+
+Step 2:
+Enter name, email, verification → Next
+
+Step 3:
+Add members → Invite → Members accept  
+Go to Settings → Member privileges  
+Base permissions → Write  
+Project base permissions → Write
+
+Step 4:
+Create a remote repository inside the organization  
+Give permissions → Team members can access it  
+Repo can be private or public
+
+------------------------------------------------------------
+b) Collaborating through a Shared Repository
+------------------------------------------------------------
+Steps for Collaborator 1:
+Settings → Collaborators  
+Add people  
+Collaborator 2 accepts invitation
+
+Steps for Collaborator 2:
+1. Configure Git:
+git config --global user.name "Your Name"
+git config --global user.email you@example.com
+
+Check connection:
+git remote -v
+
+2. Copy repo URL from GitHub
+
+3. Clone repo:
+git clone https://github.com/username/repository.git
+cd repository
+
+4. Create a feature branch:
+git checkout -b feature/your-feature-name
+
+5. Make changes:
+git add .
+git commit -m "Meaningful message"
+
+6. Push branch:
+git push origin feature/your-feature-name
+
+7. Keep branch updated:
+git checkout main
+git pull origin main
+git checkout feature/your-feature-name
+git merge main
+
+------------------------------------------------------------
+EXERCISE ON FORK (for public repositories)
+------------------------------------------------------------
+Steps:
+1. Go to public repo (Person1)
+2. Click Fork → repo copies to your account
+3. Clone your fork:
+git clone https://github.com/Person2/awesome-project
+4. Make changes → add → commit → push
+5. Create Pull Request:
+Go to repo → Pull Request → Add title → Create Pull Request
+6. Review by Person1:
+Check PR → Review → Submit review → Merge pull request → Confirm
+
+------------------------------------------------------------
+2. RESOLVING CONFLICTS IN GIT
+------------------------------------------------------------
+Conflicts occur when two users edit the same part of a file.
+
+Steps to resolve:
+
+1. Check which files have conflict:
+git status
+
+2. Open conflicting file
+Conflict markers look like:
+<<<<<<< HEAD
+(my version)
+=======
+(other branch version)
+>>>>>>> branch-name
+
+3. Fix conflict → choose or combine final content  
+Remove markers (<<<<<<<, =======, >>>>>>>)
+
+4. Mark resolved:
+git add filename
+
+5. Complete merge:
+git commit
+
+If rebasing:
+git rebase --continue
+
+Abort merge:
+git merge --abort
+
+Tips:
+● Always git pull before starting work
+● Communicate with team
+● Make small commits
+
+------------------------------------------------------------
+3. WHAT IS A PATCH?
+------------------------------------------------------------
+A patch is a text file containing changes from commits.
+Created using git format-patch and can be sent to others.
+
+Steps:
+1. Clone public repo
+2. Make changes → git add → git commit
+3. View log:
+git log
+4. Create patch:
+git format-patch -1 <commit-hash>
+→ Generates file: 0001-commit-message.patch
+5. Send this patch to owner
+6. Owner applies patch:
+git apply file.patch
+or
+git am 0001-file.patch
+
+Multiple patches:
+git format-patch -3
+or
+git format-patch base_commit..HEAD
+
+------------------------------------------------------------
+4. SCENARIO-BASED QUESTIONS (WITH ONE-LINE ANSWERS)
+------------------------------------------------------------
+
+1. “Rejected - non-fast-forward” while pushing:
+Solution:
+git pull --rebase origin main  
+Then push:
+git push
+
+2. Push feature branch without affecting main:
+git push origin feature-branch
+
+3. Update local repo with new remote branches:
+git fetch --all
+git pull
+
+4. Avoid conflicts when pulling:
+git stash
+git pull
+git stash pop
+
+5. Remove accidentally pushed sensitive file:
+git rm --cached file  
+Add to .gitignore  
+git commit -m "Remove sensitive file"  
+git push  
+(For full removal: use filter-branch or BFG)
+
+6. Merge latest main into feature branch:
+git checkout feature  
+git pull origin main  
+git merge main
+
+7. Push to a new remote repository:
+git remote set-url origin <new-url>
+git push -u origin main
+
+8. Local branch behind remote branch:
+git stash
+git pull
+git stash pop
+
+9. Resolve conflicts with collaborators:
+git pull
+Fix conflicts
+git add .
+git commit
+
+10. Delete remote branch:
+git push origin --delete branch-name
+
+------------------------------------------------------------
+END OF WEEK-3 WORKFLOW
+------------------------------------------------------------
