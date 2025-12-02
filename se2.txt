@@ -1,92 +1,3 @@
--------------------------------
-
-week 8: (to run web app)
-
-tomcat-user file code (web deploy tomcat)
-
-<role rolename="manager-gui"/>
-<role rolename="manager-script"/>
-<role rolename="admin-gui"/>
-<user username="admin" password="1234" roles="manager-gui,manager-script,admin-gui"/>
-
-to start bin/startup batch
-to see port conf/service
-
-
-
-week 9:
-
-poll scm Jenkinsfile code:
-
-pipeline {
-    agent any
-    tools {
-        maven 'MAVEN_HOME'
-    }
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-        stage('clean') {
-            steps {
-                bat "mvn clean"
-            }
-        }
-        stage('install') {
-            steps {
-                bat "mvn install"
-            }
-        }
-        stage('test') {
-            steps {
-                bat "mvn test"
-            }
-        }
-        stage('package') {
-            steps {
-                bat "mvn package"
-            }
-        }
-    }
-}
-
-
-
-pipeline code for periodical:
-pipeline {
-    agent any
-    tools{
-        maven 'MAVEN_HOME'
-    }
-    stages {
-        stage('git repo & clean') {
-            steps {
-                bat "rmdir  /s /q octYogitaJava || exit 0"
-                bat "git clone https://github.com/anujyog1/octYogitaJava.git"
-                bat "mvn clean -f octYogitaJava"
-            }
-        }
-        stage('install') {
-            steps {
-                bat "mvn install -f octYogitaJava"
-            }
-        }
-        stage('test') {
-            steps {
-                bat "mvn test -f octYogitaJava"
-            }
-        }
-        stage('package') {
-            steps {
-                bat "mvn package -f octYogitaJava"
-            }
-        }
-    }
-}
-
-
 
 
 
@@ -237,3 +148,95 @@ cd target->ls -> get the .war filename example lab-aws.war
 go to: http://54.167.22.74:9090/my-lab-web-app/ (the war file name)
 
 (to add edit security grp
+
+
+
+-------------------------------
+
+week 8: (to run web app)
+
+tomcat-user file code (web deploy tomcat)
+
+<role rolename="manager-gui"/>
+<role rolename="manager-script"/>
+<role rolename="admin-gui"/>
+<user username="admin" password="1234" roles="manager-gui,manager-script,admin-gui"/>
+
+to start bin/startup batch
+to see port conf/service
+
+
+
+week 9:
+
+poll scm Jenkinsfile code:
+
+pipeline {
+    agent any
+    tools {
+        maven 'MAVEN_HOME'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('clean') {
+            steps {
+                bat "mvn clean"
+            }
+        }
+        stage('install') {
+            steps {
+                bat "mvn install"
+            }
+        }
+        stage('test') {
+            steps {
+                bat "mvn test"
+            }
+        }
+        stage('package') {
+            steps {
+                bat "mvn package"
+            }
+        }
+    }
+}
+
+
+
+pipeline code for periodical:
+pipeline {
+    agent any
+    tools{
+        maven 'MAVEN_HOME'
+    }
+    stages {
+        stage('git repo & clean') {
+            steps {
+                bat "rmdir  /s /q octYogitaJava || exit 0"
+                bat "git clone https://github.com/anujyog1/octYogitaJava.git"
+                bat "mvn clean -f octYogitaJava"
+            }
+        }
+        stage('install') {
+            steps {
+                bat "mvn install -f octYogitaJava"
+            }
+        }
+        stage('test') {
+            steps {
+                bat "mvn test -f octYogitaJava"
+            }
+        }
+        stage('package') {
+            steps {
+                bat "mvn package -f octYogitaJava"
+            }
+        }
+    }
+}
+
+
